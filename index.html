@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kleeberger Driveway Paving Calculator</title>
+  <style>
+    :root {
+      --bg: #f5f1ea;
+      --card: #ffffff;
+      --ink: #1f2933;
+      --muted: #64748b;
+      --line: #ded7cc;
+      --accent: #2f5f4f;
+      --accent-dark: #21463b;
+      --soft: #eef4f1;
+      --danger: #9f1239;
+      --shadow: 0 18px 45px rgba(31, 41, 51, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, #fbfaf7 0%, var(--bg) 100%);
+      min-height: 100vh;
+      padding: 28px 16px;
+    }
+
+    .wrap {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .hero {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    header {
+      padding: 34px 34px 22px;
+      border-bottom: 1px solid var(--line);
+      background: radial-gradient(circle at top right, var(--soft), transparent 42%), #fff;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1.05;
+      letter-spacing: -0.035em;
+    }
+
+    .intro {
+      margin: 0;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.55;
+      max-width: 650px;
+    }
+
+    main { padding: 28px 34px 34px; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 20px;
+      background: #fff;
+    }
+
+    .panel h2 {
+      margin: 0 0 14px;
+      font-size: 18px;
+      letter-spacing: -0.01em;
+    }
+
+    .doc-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 12px 16px;
+      border-radius: 10px;
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .doc-link:hover, .doc-link:focus { background: var(--accent-dark); }
+
+    .specs {
+      list-style: none;
+      margin: 14px 0 0;
+      padding: 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .specs strong { color: var(--ink); }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .field { margin-bottom: 16px; }
+
+    input {
+      width: 100%;
+      min-height: 48px;
+      border: 1px solid #cfc7ba;
+      border-radius: 10px;
+      padding: 11px 13px;
+      font-size: 18px;
+      color: var(--ink);
+      background: #fff;
+    }
+
+    input:focus {
+      outline: 3px solid rgba(47, 95, 79, .18);
+      border-color: var(--accent);
+    }
+
+    .hint {
+      margin-top: 6px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .result {
+      border-radius: 16px;
+      background: var(--soft);
+      border: 1px solid #d7e5df;
+      padding: 22px;
+      margin-top: 8px;
+    }
+
+    .result-label {
+      color: var(--accent-dark);
+      font-weight: 700;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: 6px;
+    }
+
+    .result-value {
+      font-size: clamp(36px, 8vw, 62px);
+      line-height: 1;
+      letter-spacing: -0.05em;
+      font-weight: 800;
+    }
+
+    .formula {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .breakdown {
+      margin-top: 20px;
+      border-top: 1px solid var(--line);
+      padding-top: 18px;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 8px 0;
+      border-bottom: 1px solid #eee9e1;
+      font-size: 15px;
+    }
+
+    .row span:last-child { font-weight: 700; }
+
+    .error { color: var(--danger); font-weight: 700; }
+
+    @media (max-width: 720px) {
+      body { padding: 14px; }
+      header, main { padding-left: 20px; padding-right: 20px; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero" aria-labelledby="page-title">
+      <header>
+        <div class="eyebrow">Paving estimate helper</div>
+        <h1 id="page-title">Kleeberger Driveway Project</h1>
+        <p class="intro">Use the project square footage from the attached driveway specs to calculate the paving cost per square foot from any total project cost.</p>
+      </header>
+
+      <main>
+        <div class="grid">
+          <div class="panel">
+            <h2>Project document</h2>
+            <a class="doc-link" href="Kleeberger_driveway_specs.pdf" target="_blank" rel="noopener">Open driveway specs PDF</a>
+            <ul class="specs" aria-label="Square footage summary">
+              <li><strong>Garage/Concrete Area:</strong> 952 sq. ft.</li>
+              <li><strong>Main Driveway Section:</strong> 520 sq. ft.</li>
+              <li><strong>Shop Access Area:</strong> 140 sq. ft.</li>
+              <li><strong>Curved Corner Transition:</strong> 50 sq. ft.</li>
+              <li><strong>Total estimated area:</strong> 1,662 sq. ft.</li>
+            </ul>
+          </div>
+
+          <div class="panel">
+            <h2>Cost per square foot</h2>
+            <div class="field">
+              <label for="totalCost">Total project cost</label>
+              <input id="totalCost" type="number" inputmode="decimal" min="0" step="0.01" placeholder="Example: 12500" />
+              <div class="hint">Enter the full paving project cost in dollars.</div>
+            </div>
+            <div class="field">
+              <label for="squareFeet">Project square footage</label>
+              <input id="squareFeet" type="number" inputmode="decimal" min="1" step="1" value="1662" />
+              <div class="hint">Pre-filled from the driveway specs. You can adjust it if needed.</div>
+            </div>
+          </div>
+        </div>
+
+        <section class="result" aria-live="polite">
+          <div class="result-label">Calculated cost per sq. ft.</div>
+          <div class="result-value" id="costPerSqFt">$0.00</div>
+          <div class="formula" id="formula">Enter a project cost to calculate.</div>
+        </section>
+
+        <section class="breakdown" aria-label="Document area breakdown">
+          <div class="row"><span>Garage/Concrete Area</span><span>952 sq. ft.</span></div>
+          <div class="row"><span>Main Driveway Section</span><span>520 sq. ft.</span></div>
+          <div class="row"><span>Shop Access Area</span><span>140 sq. ft.</span></div>
+          <div class="row"><span>Curved Corner Transition</span><span>50 sq. ft.</span></div>
+          <div class="row"><span>Total Estimated Square Footage</span><span>1,662 sq. ft.</span></div>
+        </section>
+      </main>
+    </section>
+  </div>
+
+  <script>
+    const totalCostInput = document.getElementById('totalCost');
+    const squareFeetInput = document.getElementById('squareFeet');
+    const costPerSqFt = document.getElementById('costPerSqFt');
+    const formula = document.getElementById('formula');
+
+    const dollars = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+    const number = new Intl.NumberFormat('en-US');
+
+    function calculate() {
+      const totalCost = Number(totalCostInput.value);
+      const squareFeet = Number(squareFeetInput.value);
+
+      if (!totalCostInput.value) {
+        costPerSqFt.textContent = '$0.00';
+        formula.textContent = 'Enter a project cost to calculate.';
+        formula.classList.remove('error');
+        return;
+      }
+
+      if (totalCost < 0 || !Number.isFinite(totalCost)) {
+        costPerSqFt.textContent = '—';
+        formula.textContent = 'Enter a valid project cost.';
+        formula.classList.add('error');
+        return;
+      }
+
+      if (squareFeet <= 0 || !Number.isFinite(squareFeet)) {
+        costPerSqFt.textContent = '—';
+        formula.textContent = 'Square footage must be greater than zero.';
+        formula.classList.add('error');
+        return;
+      }
+
+      const rate = totalCost / squareFeet;
+      costPerSqFt.textContent = dollars.format(rate);
+      formula.textContent = `${dollars.format(totalCost)} ÷ ${number.format(squareFeet)} sq. ft. = ${dollars.format(rate)} per sq. ft.`;
+      formula.classList.remove('error');
+    }
+
+    totalCostInput.addEventListener('input', calculate);
+    squareFeetInput.addEventListener('input', calculate);
+    calculate();
+  </script>
+</body>
+</html>
