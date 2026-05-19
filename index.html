@@ -100,13 +100,67 @@
       min-height: 46px;
       padding: 12px 16px;
       border-radius: 10px;
+      border: 0;
       background: var(--accent);
       color: #fff;
       text-decoration: none;
+      font: inherit;
       font-weight: 700;
+      cursor: pointer;
     }
 
     .doc-link:hover, .doc-link:focus { background: var(--accent-dark); }
+
+    .modal {
+      border: 0;
+      padding: 0;
+      width: min(92vw, 760px);
+      max-height: 92vh;
+      border-radius: 16px;
+      box-shadow: 0 24px 70px rgba(15, 23, 42, .32);
+      background: #fff;
+    }
+
+    .modal::backdrop {
+      background: rgba(15, 23, 42, .58);
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .modal-title {
+      font-weight: 800;
+      letter-spacing: -.01em;
+    }
+
+    .modal-close {
+      min-width: 44px;
+      min-height: 44px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+      color: var(--ink);
+      font-size: 26px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .modal-close:hover, .modal-close:focus { background: var(--soft); }
+
+    .sketch-image {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: calc(92vh - 74px);
+      object-fit: contain;
+      background: #f8fafc;
+    }
 
     .specs {
       list-style: none;
@@ -219,11 +273,11 @@
         <div class="grid">
           <div class="panel">
             <h2>Project document</h2>
-            <a class="doc-link" href="Kleeberger_driveway_specs.pdf" target="_blank" rel="noopener">Open driveway specs PDF</a>
+            <button class="doc-link" type="button" id="openSketch">Open driveway sketch</button>
             <ul class="specs" aria-label="Square footage summary">
-              <li><strong>Garage/Concrete Area:</strong> 952 sq. ft.</li>
-              <li><strong>Main Driveway Section:</strong> 520 sq. ft.</li>
-              <li><strong>Shop Access Area:</strong> 140 sq. ft.</li>
+              <li><strong>Garage/Concrete Area (28' x 34'):</strong> 952 sq. ft.</li>
+              <li><strong>Main Driveway Section (13' x 40'):</strong> 520 sq. ft.</li>
+              <li><strong>Shop Access Area (10' x 14'):</strong> 140 sq. ft.</li>
               <li><strong>Curved Corner Transition:</strong> 50 sq. ft.</li>
               <li><strong>Total estimated area:</strong> 1,662 sq. ft.</li>
             </ul>
@@ -251,9 +305,9 @@
         </section>
 
         <section class="breakdown" aria-label="Document area breakdown">
-          <div class="row"><span>Garage/Concrete Area</span><span>952 sq. ft.</span></div>
-          <div class="row"><span>Main Driveway Section</span><span>520 sq. ft.</span></div>
-          <div class="row"><span>Shop Access Area</span><span>140 sq. ft.</span></div>
+          <div class="row"><span>Garage/Concrete Area (28' x 34')</span><span>952 sq. ft.</span></div>
+          <div class="row"><span>Main Driveway Section (13' x 40')</span><span>520 sq. ft.</span></div>
+          <div class="row"><span>Shop Access Area (10' x 14')</span><span>140 sq. ft.</span></div>
           <div class="row"><span>Curved Corner Transition</span><span>50 sq. ft.</span></div>
           <div class="row"><span>Total Estimated Square Footage</span><span>1,662 sq. ft.</span></div>
         </section>
@@ -261,11 +315,22 @@
     </section>
   </div>
 
+  <dialog class="modal" id="sketchModal" aria-labelledby="sketchTitle">
+    <div class="modal-header">
+      <div class="modal-title" id="sketchTitle">Kleeberger driveway sketch</div>
+      <button class="modal-close" type="button" id="closeSketch" aria-label="Close driveway sketch">×</button>
+    </div>
+    <img class="sketch-image" src="kleeberger-driveway-sketch.jpg" alt="Kleeberger driveway dimensions sketch showing garage, shop, driveway, and measurements" />
+  </dialog>
+
   <script>
     const totalCostInput = document.getElementById('totalCost');
     const squareFeetInput = document.getElementById('squareFeet');
     const costPerSqFt = document.getElementById('costPerSqFt');
     const formula = document.getElementById('formula');
+    const openSketch = document.getElementById('openSketch');
+    const closeSketch = document.getElementById('closeSketch');
+    const sketchModal = document.getElementById('sketchModal');
 
     const dollars = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
     const number = new Intl.NumberFormat('en-US');
@@ -325,6 +390,13 @@
       calculate();
     });
     squareFeetInput.addEventListener('input', calculate);
+    openSketch.addEventListener('click', () => sketchModal.showModal());
+    closeSketch.addEventListener('click', () => sketchModal.close());
+    sketchModal.addEventListener('click', (event) => {
+      if (event.target === sketchModal) {
+        sketchModal.close();
+      }
+    });
     calculate();
   </script>
 </body>
