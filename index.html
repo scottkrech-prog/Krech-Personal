@@ -233,8 +233,8 @@
             <h2>Cost per square foot</h2>
             <div class="field">
               <label for="totalCost">Total project cost</label>
-              <input id="totalCost" type="number" inputmode="decimal" min="0" step="0.01" placeholder="Example: 12500" />
-              <div class="hint">Enter the full paving project cost in dollars.</div>
+              <input id="totalCost" type="text" inputmode="decimal" autocomplete="off" placeholder="Example: $12,500" />
+              <div class="hint">Enter the full paving project cost. It will format as dollars automatically.</div>
             </div>
             <div class="field">
               <label for="squareFeet">Project square footage</label>
@@ -270,11 +270,29 @@
     const dollars = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
     const number = new Intl.NumberFormat('en-US');
 
+    function parseCurrency(value) {
+      const cleaned = value.replace(/[^0-9.]/g, '');
+      const parts = cleaned.split('.');
+      const normalized = parts.length > 1 ? `${parts[0]}.${parts.slice(1).join('')}` : cleaned;
+      return Number(normalized);
+    }
+
+    function formatCurrencyInput() {
+      const raw = totalCostInput.value;
+      const amount = parseCurrency(raw);
+
+      if (!raw.trim() || !Number.isFinite(amount)) {
+        return;
+      }
+
+      totalCostInput.value = dollars.format(amount);
+    }
+
     function calculate() {
-      const totalCost = Number(totalCostInput.value);
+      const totalCost = parseCurrency(totalCostInput.value);
       const squareFeet = Number(squareFeetInput.value);
 
-      if (!totalCostInput.value) {
+      if (!totalCostInput.value.trim()) {
         costPerSqFt.textContent = '$0.00';
         formula.textContent = 'Enter a project cost to calculate.';
         formula.classList.remove('error');
@@ -302,6 +320,10 @@
     }
 
     totalCostInput.addEventListener('input', calculate);
+    totalCostInput.addEventListener('blur', () => {
+      formatCurrencyInput();
+      calculate();
+    });
     squareFeetInput.addEventListener('input', calculate);
     calculate();
   </script>
