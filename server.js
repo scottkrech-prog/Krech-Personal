@@ -1,12 +1,15 @@
 import 'dotenv/config';
 import express from 'express';
 import nodemailer from 'nodemailer';
+import PDFDocument from 'pdfkit';
+import crypto from 'crypto';
 import { z } from 'zod';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const OWNER_EMAIL = process.env.OWNER_EMAIL || '';
 const FROM_EMAIL = process.env.FROM_EMAIL || OWNER_EMAIL || 'no-reply@charlottepropertydetailing.com';
+const invoices = new Map();
 
 app.use(express.json({ limit: '2mb' }));
 app.use(express.static('public'));
@@ -72,29 +75,110 @@ function getTransporter() {
   });
 }
 
+function invoiceNumber() {
+  const now = new Date();
+  const ymd = now.toISOString().slice(0, 10).replaceAll('-', '');
+  return `CPD-${ymd}-${crypto.randomBytes(3).toString('hex').toUpperCase()}`;
+}
+
+function signatureBuffer(dataUrl) {
+  const base64 = dataUrl.replace(/^data:image\/png;base64,/, '');
+  return Buffer.from(base64, 'base64');
+}
+
+function buildInvoicePdf(data, number) {
+  return new Promise((resolve, reject) => {
+    const doc = new PDFDocument({ size: 'LETTER', margin: 50 });
+    const chunks = [];
+    doc.on('data', (chunk) => chunks.push(chunk));
+    doc.on('end', () => resolve(Buffer.concat(chunks)));
+    doc.on('error', reject);
+
+    const paidDate = data.signedAt || new Date().toLocaleString('en-US', { timeZone: 'America/New_York' });
+    const customerName = `${data.firstName} ${data.lastName}`;
+    const address = `${data.streetAddress}\n${data.city}, ${data.state} ${data.zip}`;
+
+    doc.fontSize(20).fillColor('#0f5f8f').text('Charlotte Property Detailing & Pressure Washing', { align: 'left' });
+    doc.moveDown(0.3).fontSize(10).fillColor('#333').text('Jerry Johnson • 980-290-8919');
+    doc.moveDown(1.2);
+
+    doc.fontSize(26).fillColor('#1d8a56').text('PAID INVOICE', { align: 'right' });
+    doc.fontSize(11).fillColor('#333').text(`Invoice #: ${number}`, { align: 'right' });
+    doc.text(`Paid Date: ${paidDate}`, { align: 'right' });
+    doc.moveDown(1.2);
+
+    doc.fontSize(12).fillColor('#111').text('Bill To:', { underline: true });
+    doc.moveDown(0.2).fontSize(11).text(customerName);
+    doc.text(address);
+    doc.text(data.mobilePhone);
+    doc.text(data.email);
+    doc.moveDown(1.2);
+
+    const startY = doc.y;
+    doc.rect(50, startY, 512, 28).fill('#0f5f8f');
+    doc.fillColor('white').fontSize(11).text('Service', 60, startY + 9).text('Amount', 460, startY + 9);
+    doc.rect(50, startY + 28, 512, 44).stroke('#d8e0e8');
+    doc.fillColor('#111').fontSize(11).text(data.service, 60, startY + 43, { width: 340 });
+    doc.text(money(data.amount), 460, startY + 43, { width: 90, align: 'right' });
+    doc.moveDown(5);
+
+    doc.fontSize(15).fillColor('#1d8a56').text(`Total Paid: ${money(data.amount)}`, { align: 'right' });
+    if (data.notes) {
+      doc.moveDown(1).fontSize(11).fillColor('#111').text('Notes:', { underline: true });
+      doc.moveDown(0.2).text(data.notes, { width: 500 });
+    }
+
+    doc.moveDown(1.5).fontSize(11).fillColor('#111').text('Customer Digital Signature:', { underline: true });
+    try {
+      doc.image(signatureBuffer(data.signatureDataUrl), 50, doc.y + 8, { fit: [260, 90] });
+    } catch {
+      doc.text('[Signature captured]');
+    }
+    doc.moveDown(7);
+    doc.fontSize(9).fillColor('#666').text('Thank you for choosing Charlotte Property Detailing & Pressure Washing. This paid invoice confirms the service record entered at completion.', { align: 'center' });
+    doc.end();
+  });
+}
+
 app.post('/api/send-service-record', async (req, res) => {
   const parsed = schema.safeParse(req.body);
   if (!parsed.success) {
     return res.status(400).json({ ok: false, error: parsed.error.issues[0]?.message || 'Invalid form' });
   }
-  if (!OWNER_EMAIL) return res.status(500).json({ ok: false, error: 'OWNER_EMAIL is not configured yet.' });
-  const transporter = getTransporter();
-  if (!transporter) return res.status(500).json({ ok: false, error: 'SMTP email settings are not configured yet.' });
 
   const data = parsed.data;
-  const html = buildEmail(data);
-  const subject = `Service record: ${data.firstName} ${data.lastName} - ${money(data.amount)}`;
+  const number = invoiceNumber();
+  const pdf = await buildInvoicePdf(data, number);
+  invoices.set(number, { pdf, data, createdAt: new Date() });
 
-  await transporter.sendMail({
-    from: `Charlotte Property Detailing <${FROM_EMAIL}>`,
-    to: data.email,
-    cc: OWNER_EMAIL,
-    replyTo: OWNER_EMAIL,
-    subject,
-    html
-  });
+  // Temporary mode: no email required until SMTP is configured.
+  // If SMTP exists later, this will also email the customer/Jerry with the paid invoice attached.
+  let emailSent = false;
+  const transporter = getTransporter();
+  if (transporter && OWNER_EMAIL) {
+    const html = buildEmail(data);
+    const subject = `Paid invoice: ${data.firstName} ${data.lastName} - ${money(data.amount)}`;
+    await transporter.sendMail({
+      from: `Charlotte Property Detailing <${FROM_EMAIL}>`,
+      to: data.email,
+      cc: OWNER_EMAIL,
+      replyTo: OWNER_EMAIL,
+      subject,
+      html,
+      attachments: [{ filename: `${number}.pdf`, content: pdf, contentType: 'application/pdf' }]
+    });
+    emailSent = true;
+  }
 
-  res.json({ ok: true });
+  res.json({ ok: true, emailSent, invoiceUrl: `/invoice/${number}.pdf`, invoiceNumber: number });
+});
+
+app.get('/invoice/:number.pdf', (req, res) => {
+  const invoice = invoices.get(req.params.number);
+  if (!invoice) return res.status(404).send('Invoice not found or expired.');
+  res.setHeader('Content-Type', 'application/pdf');
+  res.setHeader('Content-Disposition', `inline; filename="${req.params.number}.pdf"`);
+  res.send(invoice.pdf);
 });
 
 app.get('/health', (_req, res) => res.json({ ok: true, ownerEmailConfigured: Boolean(OWNER_EMAIL), smtpConfigured: Boolean(getTransporter()) }));

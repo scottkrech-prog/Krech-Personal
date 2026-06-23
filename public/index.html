@@ -119,8 +119,9 @@ document.getElementById('serviceForm').addEventListener('submit', async (e) => {
   try {
     const res = await fetch('/api/send-service-record', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
     const data = await res.json();
-    if (!res.ok || !data.ok) throw new Error(data.error || 'Could not send email');
-    setStatus('ok', 'Sent. A copy was emailed to the customer and Charlotte Property Detailing.');
+    if (!res.ok || !data.ok) throw new Error(data.error || 'Could not create invoice');
+    setStatus('ok', data.emailSent ? 'Sent. A copy was emailed and the paid invoice is opening now.' : 'Paid invoice created. Opening the PDF now.');
+    window.location.href = data.invoiceUrl;
     e.currentTarget.reset(); ctx.clearRect(0,0,canvas.width,canvas.height); hasSignature = false;
   } catch (err) {
     setStatus('bad', err.message || 'Could not send right now.');
