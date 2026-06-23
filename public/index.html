@@ -32,7 +32,6 @@
     .qrActions > div { flex:1; }
     .qrLink { display:none; margin-top:12px; padding:12px; background:#e8f7ec; border-radius:12px; }
     .qrLink a { color:#0f5f8f; font-weight:800; }
-    .lockedNotice { display:none; margin:20px 20px 0; padding:14px; border-radius:14px; background:#e8f7ec; color:#13551e; font-weight:700; }
     input[readonly] { background:#eef4f0; color:#17212b; font-weight:800; }
     .help { color:var(--muted); font-size:13px; margin:6px 0 0; }
     .status { margin-top:14px; padding:12px; border-radius:12px; display:none; }
@@ -62,7 +61,6 @@
         </div>
         <div id="qrLink" class="qrLink"></div>
       </div>
-      <div id="lockedNotice" class="lockedNotice"></div>
 
       <form id="serviceForm">
         <div class="grid">
@@ -132,7 +130,6 @@ const amountInput = document.getElementById('amount');
 const setupAmount = document.getElementById('setupAmount');
 const qrSetup = document.getElementById('qrSetup');
 const qrLink = document.getElementById('qrLink');
-const lockedNotice = document.getElementById('lockedNotice');
 
 function cleanAmount(value) {
   const num = Number(value);
@@ -146,8 +143,6 @@ if (lockedAmount) {
     amountInput.value = amount;
     amountInput.readOnly = true;
     qrSetup.style.display = 'none';
-    lockedNotice.style.display = 'block';
-    lockedNotice.textContent = `Price locked by Jerry: $${amount}`;
   }
 }
 
