@@ -2,6 +2,7 @@ import 'dotenv/config';
 import express from 'express';
 import nodemailer from 'nodemailer';
 import PDFDocument from 'pdfkit';
+import QRCode from 'qrcode';
 import crypto from 'crypto';
 import { z } from 'zod';
 
@@ -179,6 +180,45 @@ app.get('/invoice/:number.pdf', (req, res) => {
   res.setHeader('Content-Type', 'application/pdf');
   res.setHeader('Content-Disposition', `inline; filename="${req.params.number}.pdf"`);
   res.send(invoice.pdf);
+});
+
+app.get('/qr.png', async (req, res) => {
+  const target = String(req.query.url || '');
+  if (!target.startsWith('http://') && !target.startsWith('https://')) return res.status(400).send('Missing QR URL');
+  const png = await QRCode.toBuffer(target, { type: 'png', width: 720, margin: 2, errorCorrectionLevel: 'M' });
+  res.setHeader('Content-Type', 'image/png');
+  res.setHeader('Cache-Control', 'no-store');
+  res.send(png);
+});
+
+app.get('/qr', (req, res) => {
+  const target = String(req.query.url || '');
+  if (!target.startsWith('http://') && !target.startsWith('https://')) return res.status(400).send('Missing QR URL');
+  const safeTarget = escapeHtml(target);
+  const qrSrc = `/qr.png?url=${encodeURIComponent(target)}`;
+  res.send(`<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Customer QR Code</title>
+  <style>
+    body{margin:0;font-family:Arial,sans-serif;background:#f5f8fb;color:#17212b;display:grid;place-items:center;min-height:100vh;padding:18px}
+    .card{background:white;max-width:520px;width:100%;border-radius:18px;box-shadow:0 8px 30px rgba(10,40,70,.12);padding:22px;text-align:center}
+    h1{font-size:24px;margin:0 0 8px}.muted{color:#607083}.qr{width:100%;max-width:360px;border:1px solid #d8e0e8;border-radius:14px;padding:12px;margin:12px auto;display:block}
+    a{color:#0f5f8f;font-weight:700;word-break:break-word}.btn{display:inline-block;margin-top:12px;background:#2f7d32;color:white;text-decoration:none;border-radius:12px;padding:12px 14px}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Scan to Open Customer Form</h1>
+    <p class="muted">Have the customer scan this QR code with their phone.</p>
+    <img class="qr" src="${qrSrc}" alt="QR code">
+    <p><a href="${safeTarget}">${safeTarget}</a></p>
+    <a class="btn" href="${safeTarget}">Open Form</a>
+  </div>
+</body>
+</html>`);
 });
 
 app.get('/health', (_req, res) => res.json({ ok: true, ownerEmailConfigured: Boolean(OWNER_EMAIL), smtpConfigured: Boolean(getTransporter()) }));

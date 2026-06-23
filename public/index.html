@@ -26,12 +26,20 @@
     button { border:0; border-radius:12px; padding:14px 16px; font-size:16px; font-weight:800; cursor:pointer; }
     .primary { background:var(--green); color:white; width:100%; margin-top:18px; }
     .secondary { background:#e9f0f7; color:#17324a; padding:10px 12px; font-size:14px; }
+    .qrSetup { margin:20px 20px 0; padding:16px; border:1px solid #d8e0e8; border-radius:16px; background:#f8fbff; }
+    .qrSetup h2 { margin:0 0 6px; font-size:18px; }
+    .qrActions { display:flex; gap:10px; align-items:end; margin-top:12px; }
+    .qrActions > div { flex:1; }
+    .qrLink { display:none; margin-top:12px; padding:12px; background:#e8f7ec; border-radius:12px; }
+    .qrLink a { color:#0f5f8f; font-weight:800; }
+    .lockedNotice { display:none; margin:20px 20px 0; padding:14px; border-radius:14px; background:#e8f7ec; color:#13551e; font-weight:700; }
+    input[readonly] { background:#eef4f0; color:#17212b; font-weight:800; }
     .help { color:var(--muted); font-size:13px; margin:6px 0 0; }
     .status { margin-top:14px; padding:12px; border-radius:12px; display:none; }
     .ok { display:block; background:#e8f7ec; color:#13551e; }
     .bad { display:block; background:#ffeaea; color:#8a1111; }
     .footer { padding:0 20px 20px; color:#607083; font-size:13px; text-align:center; }
-    @media (max-width:640px){ .wrap{padding:0}.card{border-radius:0;min-height:100vh}.grid{grid-template-columns:1fr} h1{font-size:22px} }
+    @media (max-width:640px){ .wrap{padding:0}.card{border-radius:0;min-height:100vh}.grid{grid-template-columns:1fr}.qrActions{display:block}.qrActions button{width:100%;margin-top:10px} h1{font-size:22px} }
   </style>
 </head>
 <body>
@@ -44,6 +52,17 @@
           <p>Customer service record • Jerry Johnson • 980-290-8919</p>
         </div>
       </header>
+
+      <div id="qrSetup" class="qrSetup">
+        <h2>Jerry: Enter Price First</h2>
+        <p class="help">Enter the amount, then open the QR code. The customer will scan it and the price will be locked on their form.</p>
+        <div class="qrActions">
+          <div><label for="setupAmount">Amount Charged *</label><input id="setupAmount" inputmode="decimal" type="number" step="0.01" min="0" placeholder="0.00"></div>
+          <button class="secondary" type="button" id="buildQr">Open QR Code</button>
+        </div>
+        <div id="qrLink" class="qrLink"></div>
+      </div>
+      <div id="lockedNotice" class="lockedNotice"></div>
 
       <form id="serviceForm">
         <div class="grid">
@@ -106,6 +125,46 @@ canvas.addEventListener('touchstart', start, {passive:false}); canvas.addEventLi
 document.getElementById('clearSig').onclick = () => { ctx.clearRect(0,0,canvas.width,canvas.height); hasSignature = false; };
 
 function setStatus(type, msg) { statusBox.className = 'status ' + type; statusBox.textContent = msg; }
+
+const params = new URLSearchParams(window.location.search);
+const lockedAmount = params.get('amount');
+const amountInput = document.getElementById('amount');
+const setupAmount = document.getElementById('setupAmount');
+const qrSetup = document.getElementById('qrSetup');
+const qrLink = document.getElementById('qrLink');
+const lockedNotice = document.getElementById('lockedNotice');
+
+function cleanAmount(value) {
+  const num = Number(value);
+  if (!Number.isFinite(num) || num < 0) return '';
+  return num.toFixed(2);
+}
+
+if (lockedAmount) {
+  const amount = cleanAmount(lockedAmount);
+  if (amount) {
+    amountInput.value = amount;
+    amountInput.readOnly = true;
+    qrSetup.style.display = 'none';
+    lockedNotice.style.display = 'block';
+    lockedNotice.textContent = `Price locked by Jerry: $${amount}`;
+  }
+}
+
+document.getElementById('buildQr').addEventListener('click', () => {
+  const amount = cleanAmount(setupAmount.value);
+  if (!amount) {
+    qrLink.style.display = 'block';
+    qrLink.textContent = 'Enter the amount first.';
+    return;
+  }
+  amountInput.value = amount;
+  const customerUrl = `${window.location.origin}${window.location.pathname}?amount=${encodeURIComponent(amount)}`;
+  const qrUrl = `/qr?url=${encodeURIComponent(customerUrl)}`;
+  qrLink.style.display = 'block';
+  qrLink.innerHTML = `<a href="${qrUrl}" target="_blank" rel="noopener">Open QR Code for $${amount}</a><p class="help">Customer form link: ${customerUrl}</p>`;
+  window.open(qrUrl, '_blank', 'noopener');
+});
 
 document.getElementById('serviceForm').addEventListener('submit', async (e) => {
   e.preventDefault();
