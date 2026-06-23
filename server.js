@@ -14,7 +14,10 @@ app.use(express.static('public'));
 const schema = z.object({
   firstName: z.string().trim().min(1, 'First name is required').max(80),
   lastName: z.string().trim().min(1, 'Last name is required').max(80),
-  address: z.string().trim().min(3, 'Address is required').max(300),
+  streetAddress: z.string().trim().min(3, 'Street address is required').max(180),
+  city: z.string().trim().min(1, 'City is required').max(80),
+  state: z.string().trim().min(2, 'State is required').max(40),
+  zip: z.string().trim().min(5, 'Zip is required').max(20),
   mobilePhone: z.string().trim().min(7, 'Mobile phone is required').max(30),
   email: z.string().trim().email('Valid email is required').max(160),
   service: z.string().trim().min(1, 'Service performed is required').max(120),
@@ -37,13 +40,14 @@ function money(value) {
 function buildEmail(data) {
   const serviceDate = new Date().toLocaleString('en-US', { timeZone: 'America/New_York' });
   const safe = Object.fromEntries(Object.entries(data).map(([k, v]) => [k, escapeHtml(v)]));
+  const formattedAddress = `${safe.streetAddress}<br>${safe.city}, ${safe.state} ${safe.zip}`;
   return `
   <div style="font-family:Arial,sans-serif;color:#111;line-height:1.45;max-width:720px;margin:auto">
     <h2 style="margin-bottom:4px">Charlotte Property Detailing and Pressure Washing</h2>
     <p style="margin-top:0;color:#555">Service record and customer acknowledgement</p>
     <table style="border-collapse:collapse;width:100%;margin:18px 0">
       <tr><td style="padding:8px;border:1px solid #ddd"><b>Customer</b></td><td style="padding:8px;border:1px solid #ddd">${safe.firstName} ${safe.lastName}</td></tr>
-      <tr><td style="padding:8px;border:1px solid #ddd"><b>Address</b></td><td style="padding:8px;border:1px solid #ddd">${safe.address}</td></tr>
+      <tr><td style="padding:8px;border:1px solid #ddd"><b>Service Address</b></td><td style="padding:8px;border:1px solid #ddd">${formattedAddress}</td></tr>
       <tr><td style="padding:8px;border:1px solid #ddd"><b>Mobile</b></td><td style="padding:8px;border:1px solid #ddd">${safe.mobilePhone}</td></tr>
       <tr><td style="padding:8px;border:1px solid #ddd"><b>Email</b></td><td style="padding:8px;border:1px solid #ddd">${safe.email}</td></tr>
       <tr><td style="padding:8px;border:1px solid #ddd"><b>Service</b></td><td style="padding:8px;border:1px solid #ddd">${safe.service}</td></tr>
