@@ -141,7 +141,7 @@ function buildInvoicePdf(data, number) {
     // Large red paid stamp across the invoice page.
     doc.save();
     doc.rotate(-24, { origin: [306, 396] });
-    doc.opacity(0.42).fontSize(104).fillColor('#cc0000').text('PAID', 120, 345, { width: 372, align: 'center' });
+    doc.opacity(0.42).fontSize(86).fillColor('#cc0000').text('PAID', 140, 360, { width: 332, align: 'center' });
     doc.restore();
 
     doc.end();
