@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Charlotte Property Detailing</title>
+  <style>
+    :root { --blue:#0f5f8f; --green:#2f7d32; --ink:#17212b; --muted:#607083; --line:#d8e0e8; --bg:#f5f8fb; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:Arial, sans-serif; background:var(--bg); color:var(--ink); }
+    .wrap { max-width:760px; margin:0 auto; padding:18px; }
+    .card { background:white; border-radius:18px; box-shadow:0 8px 30px rgba(10,40,70,.12); overflow:hidden; }
+    header { background:linear-gradient(135deg,#0f5f8f,#1d8a56); color:white; padding:20px; display:flex; gap:14px; align-items:center; }
+    .logo { width:66px; height:66px; border-radius:16px; background:white; object-fit:contain; padding:5px; flex:0 0 auto; }
+    h1 { margin:0 0 6px; font-size:24px; line-height:1.1; }
+    header p { margin:0; opacity:.94; }
+    form { padding:20px; }
+    .grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    label { display:block; font-weight:700; font-size:14px; margin-bottom:6px; }
+    input, select, textarea { width:100%; border:1px solid var(--line); border-radius:12px; padding:13px 12px; font-size:16px; background:#fff; }
+    textarea { min-height:84px; resize:vertical; }
+    .full { grid-column:1 / -1; }
+    .sigBox { border:1px dashed #9aa9b7; background:#fbfdff; border-radius:14px; padding:10px; }
+    canvas { width:100%; height:170px; background:white; border:1px solid var(--line); border-radius:10px; touch-action:none; display:block; }
+    .row { display:flex; gap:10px; align-items:center; justify-content:space-between; flex-wrap:wrap; margin-top:10px; }
+    button { border:0; border-radius:12px; padding:14px 16px; font-size:16px; font-weight:800; cursor:pointer; }
+    .primary { background:var(--green); color:white; width:100%; margin-top:18px; }
+    .secondary { background:#e9f0f7; color:#17324a; padding:10px 12px; font-size:14px; }
+    .help { color:var(--muted); font-size:13px; margin:6px 0 0; }
+    .status { margin-top:14px; padding:12px; border-radius:12px; display:none; }
+    .ok { display:block; background:#e8f7ec; color:#13551e; }
+    .bad { display:block; background:#ffeaea; color:#8a1111; }
+    .footer { padding:0 20px 20px; color:#607083; font-size:13px; text-align:center; }
+    @media (max-width:640px){ .wrap{padding:0}.card{border-radius:0;min-height:100vh}.grid{grid-template-columns:1fr} h1{font-size:22px} }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <header>
+        <img class="logo" src="/logo.png" alt="CLT Property Detailing logo">
+        <div>
+          <h1>Charlotte Property Detailing & Pressure Washing</h1>
+          <p>Customer service record • Jerry Johnson • 980-290-8919</p>
+        </div>
+      </header>
+
+      <form id="serviceForm">
+        <div class="grid">
+          <div><label for="firstName">First Name *</label><input id="firstName" name="firstName" autocomplete="given-name" required></div>
+          <div><label for="lastName">Last Name *</label><input id="lastName" name="lastName" autocomplete="family-name" required></div>
+          <div class="full"><label for="address">Service Address *</label><input id="address" name="address" autocomplete="street-address" required></div>
+          <div><label for="mobilePhone">Mobile Phone *</label><input id="mobilePhone" name="mobilePhone" autocomplete="tel" inputmode="tel" required></div>
+          <div><label for="email">Email Address *</label><input id="email" name="email" autocomplete="email" inputmode="email" type="email" required></div>
+          <div>
+            <label for="service">Service Performed *</label>
+            <select id="service" name="service" required>
+              <option value="">Select service...</option>
+              <option>Soft House Washing</option>
+              <option>Deck Staining</option>
+              <option>Concrete Cleaning</option>
+              <option>Concrete Sealing</option>
+              <option>Other Pressure Washing Service</option>
+            </select>
+          </div>
+          <div><label for="amount">Amount Charged *</label><input id="amount" name="amount" inputmode="decimal" type="number" step="0.01" min="0" placeholder="0.00" required></div>
+          <div class="full"><label for="notes">Notes / Details</label><textarea id="notes" name="notes" placeholder="Optional notes about the job"></textarea></div>
+          <div class="full">
+            <label>Customer Digital Signature *</label>
+            <div class="sigBox">
+              <canvas id="signature" width="900" height="260" aria-label="Signature pad"></canvas>
+              <div class="row">
+                <p class="help">Customer signs with finger or mouse.</p>
+                <button class="secondary" type="button" id="clearSig">Clear Signature</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button id="submitBtn" class="primary" type="submit">Send Service Record</button>
+        <div id="status" class="status"></div>
+      </form>
+      <div class="footer">Soft house washing • Deck staining • Concrete cleaning • Concrete sealing</div>
+    </div>
+  </div>
+
+<script>
+const canvas = document.getElementById('signature');
+const ctx = canvas.getContext('2d');
+const statusBox = document.getElementById('status');
+let drawing = false;
+let hasSignature = false;
+
+function pos(e) {
+  const rect = canvas.getBoundingClientRect();
+  const p = e.touches ? e.touches[0] : e;
+  return { x: (p.clientX - rect.left) * (canvas.width / rect.width), y: (p.clientY - rect.top) * (canvas.height / rect.height) };
+}
+function start(e){ drawing = true; const p = pos(e); ctx.beginPath(); ctx.moveTo(p.x,p.y); e.preventDefault(); }
+function move(e){ if(!drawing) return; const p = pos(e); ctx.lineWidth = 4; ctx.lineCap='round'; ctx.strokeStyle='#111'; ctx.lineTo(p.x,p.y); ctx.stroke(); hasSignature = true; e.preventDefault(); }
+function end(){ drawing = false; }
+canvas.addEventListener('mousedown', start); canvas.addEventListener('mousemove', move); window.addEventListener('mouseup', end);
+canvas.addEventListener('touchstart', start, {passive:false}); canvas.addEventListener('touchmove', move, {passive:false}); canvas.addEventListener('touchend', end);
+document.getElementById('clearSig').onclick = () => { ctx.clearRect(0,0,canvas.width,canvas.height); hasSignature = false; };
+
+function setStatus(type, msg) { statusBox.className = 'status ' + type; statusBox.textContent = msg; }
+
+document.getElementById('serviceForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!hasSignature) return setStatus('bad', 'Please collect the customer signature before sending.');
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true; btn.textContent = 'Sending...'; setStatus('', '');
+  const form = new FormData(e.currentTarget);
+  const payload = Object.fromEntries(form.entries());
+  payload.signatureDataUrl = canvas.toDataURL('image/png');
+  payload.signedAt = new Date().toLocaleString('en-US', { timeZone: 'America/New_York' });
+  try {
+    const res = await fetch('/api/send-service-record', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
+    const data = await res.json();
+    if (!res.ok || !data.ok) throw new Error(data.error || 'Could not send email');
+    setStatus('ok', 'Sent. A copy was emailed to the customer and Charlotte Property Detailing.');
+    e.currentTarget.reset(); ctx.clearRect(0,0,canvas.width,canvas.height); hasSignature = false;
+  } catch (err) {
+    setStatus('bad', err.message || 'Could not send right now.');
+  } finally {
+    btn.disabled = false; btn.textContent = 'Send Service Record';
+  }
+});
+</script>
+</body>
+</html>
