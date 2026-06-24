@@ -200,9 +200,9 @@ function buildInvoicePdf(data, number) {
 
     doc.fontSize(15).fillColor('#1d8a56').text(`Total Paid: ${money(data.amount)}`, { align: 'right' });
 
-    // Keep the notes/signature confirmation block on the left side of the invoice.
+    // Keep the notes/signature confirmation block anchored to the left side of the invoice.
     const leftBlockX = 50;
-    const leftBlockWidth = 350;
+    const leftBlockWidth = 390;
     doc.x = leftBlockX;
     doc.moveDown(1);
     if (data.notes) {
@@ -214,8 +214,8 @@ function buildInvoicePdf(data, number) {
     doc.fontSize(11).fillColor('#111').text('Customer Digital Signature:', leftBlockX, doc.y, { width: leftBlockWidth, underline: true });
     const signatureY = doc.y + 8;
     try {
-      doc.image(signatureBuffer(data.signatureDataUrl), leftBlockX, signatureY, { fit: [340, 120] });
-      doc.y = signatureY + 128;
+      doc.image(signatureBuffer(data.signatureDataUrl), leftBlockX, signatureY, { fit: [380, 135] });
+      doc.y = signatureY + 143;
     } catch {
       doc.text('[Signature captured]', leftBlockX, signatureY, { width: leftBlockWidth });
       doc.y = signatureY + 24;
