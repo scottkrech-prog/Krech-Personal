@@ -199,19 +199,29 @@ function buildInvoicePdf(data, number) {
     doc.moveDown(5);
 
     doc.fontSize(15).fillColor('#1d8a56').text(`Total Paid: ${money(data.amount)}`, { align: 'right' });
+
+    // Keep the notes/signature confirmation block on the left side of the invoice.
+    const leftBlockX = 50;
+    const leftBlockWidth = 350;
+    doc.x = leftBlockX;
+    doc.moveDown(1);
     if (data.notes) {
-      doc.moveDown(1).fontSize(11).fillColor('#111').text('Notes:', { underline: true });
-      doc.moveDown(0.2).text(data.notes, { width: 500 });
+      doc.fontSize(11).fillColor('#111').text('Notes:', leftBlockX, doc.y, { width: leftBlockWidth, underline: true });
+      doc.moveDown(0.2).text(data.notes, leftBlockX, doc.y, { width: leftBlockWidth });
+      doc.moveDown(1.2);
     }
 
-    doc.moveDown(1.5).fontSize(11).fillColor('#111').text('Customer Digital Signature:', { underline: true });
+    doc.fontSize(11).fillColor('#111').text('Customer Digital Signature:', leftBlockX, doc.y, { width: leftBlockWidth, underline: true });
+    const signatureY = doc.y + 8;
     try {
-      doc.image(signatureBuffer(data.signatureDataUrl), 50, doc.y + 8, { fit: [260, 90] });
+      doc.image(signatureBuffer(data.signatureDataUrl), leftBlockX, signatureY, { fit: [340, 120] });
+      doc.y = signatureY + 128;
     } catch {
-      doc.text('[Signature captured]');
+      doc.text('[Signature captured]', leftBlockX, signatureY, { width: leftBlockWidth });
+      doc.y = signatureY + 24;
     }
-    doc.moveDown(7);
-    doc.fontSize(9).fillColor('#666').text('Thank you for choosing Charlotte Property Detailing & Pressure Washing. This paid invoice confirms the service record entered at completion.', { align: 'center' });
+    doc.moveDown(0.8);
+    doc.fontSize(9).fillColor('#666').text('Thank you for choosing Charlotte Property Detailing & Pressure Washing. This paid invoice confirms the service record entered at completion.', leftBlockX, doc.y, { width: leftBlockWidth, align: 'left' });
 
     // Large red paid stamp across the invoice page.
     doc.save();
