@@ -3,572 +3,658 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Scott Krech | Growth Technology & Marketing Operations Portfolio</title>
-  <meta name="description" content="A portfolio-style career page positioning Scott Krech as a growth-focused technical operator: websites, funnels, AI workflows, CRM automation, and small-business systems." />
+  <title>Scott Krech | Growth Systems Portfolio</title>
+  <meta name="description" content="Scott Krech portfolio: growth technology, marketing operations, AI workflow implementation, business websites, automations, and client-facing systems." />
+  <meta property="og:title" content="Scott Krech | Growth Systems Portfolio" />
+  <meta property="og:description" content="A premium portfolio positioning Scott Krech as a growth technology and marketing operations operator." />
   <style>
     :root {
-      --ink: #0f172a;
-      --muted: #475569;
-      --soft: #64748b;
-      --line: #dbe4ef;
-      --paper: #ffffff;
-      --wash: #f7fafc;
-      --blue: #2563eb;
-      --blue-2: #0f4fb8;
-      --teal: #0f766e;
-      --amber: #b45309;
-      --green: #15803d;
-      --shadow: 0 20px 55px rgba(15, 23, 42, 0.10);
-      --radius-xl: 28px;
-      --radius: 18px;
+      --bg: #070a12;
+      --panel: rgba(13, 19, 34, .76);
+      --panel-strong: rgba(14, 21, 39, .94);
+      --line: rgba(148, 163, 184, .18);
+      --line-strong: rgba(148, 163, 184, .34);
+      --text: #f8fafc;
+      --muted: #a7b1c2;
+      --soft: #758197;
+      --blue: #60a5fa;
+      --cyan: #22d3ee;
+      --violet: #a78bfa;
+      --green: #34d399;
+      --amber: #fbbf24;
+      --shadow: 0 32px 90px rgba(0,0,0,.45);
+      --radius: 28px;
+      --radius-sm: 18px;
+      --max: 1240px;
     }
 
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body {
       margin: 0;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: var(--ink);
+      min-height: 100vh;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Arial, sans-serif;
+      color: var(--text);
       background:
-        radial-gradient(circle at 12% 4%, rgba(37, 99, 235, 0.13), transparent 32rem),
-        radial-gradient(circle at 88% 8%, rgba(15, 118, 110, 0.12), transparent 28rem),
-        linear-gradient(180deg, #f8fbff 0%, #ffffff 34%, #f7fafc 100%);
-      line-height: 1.55;
+        radial-gradient(circle at 16% 8%, rgba(96, 165, 250, .22), transparent 28rem),
+        radial-gradient(circle at 80% 5%, rgba(167, 139, 250, .18), transparent 30rem),
+        radial-gradient(circle at 78% 54%, rgba(34, 211, 238, .13), transparent 34rem),
+        linear-gradient(180deg, #070a12 0%, #09111f 48%, #070a12 100%);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .35;
+      background-image:
+        linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px);
+      background-size: 54px 54px;
+      mask-image: radial-gradient(circle at 50% 8%, black, transparent 72%);
     }
 
     a { color: inherit; }
+    .wrap { width: min(var(--max), calc(100% - 42px)); margin: 0 auto; }
 
-    .page-shell { max-width: 1180px; margin: 0 auto; padding: 28px 22px 70px; }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      backdrop-filter: blur(18px);
+      background: rgba(7, 10, 18, .68);
+      border-bottom: 1px solid var(--line);
+    }
 
     .nav {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
-      padding: 12px 0 34px;
+      gap: 18px;
+      min-height: 76px;
     }
 
     .brand {
       display: inline-flex;
       align-items: center;
       gap: 12px;
-      font-weight: 800;
-      letter-spacing: -0.03em;
+      text-decoration: none;
+      font-weight: 850;
+      letter-spacing: -.04em;
     }
 
-    .brand-mark {
+    .mark {
+      width: 44px;
+      height: 44px;
       display: grid;
       place-items: center;
-      width: 42px;
-      height: 42px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, var(--blue), var(--teal));
-      color: white;
-      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.25);
+      border: 1px solid rgba(255,255,255,.22);
+      border-radius: 15px;
+      background: linear-gradient(135deg, rgba(96,165,250,.95), rgba(34,211,238,.78));
+      color: #03111f;
+      box-shadow: 0 0 32px rgba(96, 165, 250, .26);
+      font-weight: 950;
     }
 
-    .nav-links { display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
-    .nav-links a {
-      text-decoration: none;
+    .brand small {
+      display: block;
+      margin-top: 1px;
       color: var(--muted);
-      font-size: 0.92rem;
+      font-size: .78rem;
+      letter-spacing: .02em;
       font-weight: 700;
-      padding: 9px 12px;
-      border-radius: 999px;
     }
-    .nav-links a:hover { background: #eaf2ff; color: var(--blue-2); }
+
+    .links { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+    .links a {
+      text-decoration: none;
+      color: #cbd5e1;
+      font-size: .9rem;
+      font-weight: 760;
+      padding: 10px 12px;
+      border-radius: 999px;
+      transition: .18s ease;
+    }
+    .links a:hover { color: white; background: rgba(255,255,255,.08); }
 
     .hero {
+      position: relative;
       display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 32px;
-      align-items: center;
-      padding: 38px;
-      border: 1px solid rgba(219, 228, 239, 0.9);
-      border-radius: var(--radius-xl);
-      background: rgba(255, 255, 255, 0.82);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(10px);
+      grid-template-columns: minmax(0, 1.05fr) minmax(320px, .95fr);
+      gap: 28px;
+      align-items: stretch;
+      padding: 70px 0 38px;
     }
 
-    .eyebrow {
+    .hero-copy {
+      padding: clamp(28px, 5vw, 52px);
+      border: 1px solid var(--line);
+      border-radius: 34px;
+      background: linear-gradient(180deg, rgba(15,23,42,.7), rgba(15,23,42,.36));
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero-copy::after {
+      content: "";
+      position: absolute;
+      inset: auto -20% -34% 24%;
+      height: 260px;
+      background: radial-gradient(circle, rgba(34,211,238,.22), transparent 65%);
+      transform: rotate(-8deg);
+      pointer-events: none;
+    }
+
+    .kicker {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      margin: 0 0 18px;
-      padding: 7px 12px;
-      border-radius: 999px;
-      background: #eff6ff;
-      color: var(--blue-2);
-      font-size: 0.82rem;
-      font-weight: 800;
+      gap: 10px;
+      margin: 0 0 22px;
+      color: #bfe8ff;
+      font-size: .78rem;
+      font-weight: 900;
+      letter-spacing: .16em;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+    }
+    .kicker::before {
+      content: "";
+      width: 36px;
+      height: 1px;
+      background: linear-gradient(90deg, var(--cyan), transparent);
     }
 
-    h1, h2, h3 { line-height: 1.08; letter-spacing: -0.045em; margin: 0; }
-    h1 { font-size: clamp(2.35rem, 6vw, 5.15rem); max-width: 850px; }
-    h2 { font-size: clamp(2rem, 3.8vw, 3.25rem); margin-bottom: 14px; }
-    h3 { font-size: 1.28rem; }
+    h1, h2, h3 { margin: 0; line-height: .98; letter-spacing: -.065em; }
+    h1 {
+      max-width: 780px;
+      font-size: clamp(3.1rem, 8vw, 7.7rem);
+      font-weight: 950;
+    }
+    .gradient-text {
+      background: linear-gradient(90deg, #ffffff 0%, #b9ddff 34%, #8df6ff 70%, #c4b5fd 100%);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
 
     .lead {
-      margin: 22px 0 0;
-      color: var(--muted);
-      font-size: clamp(1.08rem, 1.6vw, 1.32rem);
-      max-width: 760px;
+      position: relative;
+      z-index: 1;
+      max-width: 710px;
+      margin: 26px 0 0;
+      color: #c6d0df;
+      font-size: clamp(1.12rem, 1.7vw, 1.42rem);
+      line-height: 1.55;
     }
 
-    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
-    .button {
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; position: relative; z-index: 1; }
+    .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      min-height: 46px;
-      padding: 12px 18px;
+      min-height: 48px;
+      padding: 13px 18px;
       border-radius: 999px;
-      border: 1px solid transparent;
       text-decoration: none;
-      font-weight: 800;
-      transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
-    }
-    .button:hover { transform: translateY(-1px); }
-    .button.primary { color: white; background: linear-gradient(135deg, var(--blue), var(--blue-2)); box-shadow: 0 14px 30px rgba(37, 99, 235, 0.25); }
-    .button.secondary { color: var(--blue-2); background: #ffffff; border-color: #cfe0f7; }
-
-    .hero-card {
-      padding: 28px;
-      border-radius: 24px;
-      background: linear-gradient(180deg, #0f172a, #1e293b);
-      color: white;
-      box-shadow: 0 22px 45px rgba(15, 23, 42, 0.28);
-    }
-    .hero-card p { color: #cbd5e1; margin: 12px 0 0; }
-    .hero-card .headline { font-size: 1.55rem; font-weight: 850; letter-spacing: -0.04em; line-height: 1.15; }
-    .mini-list { list-style: none; padding: 0; margin: 22px 0 0; display: grid; gap: 12px; }
-    .mini-list li { display: flex; align-items: flex-start; gap: 10px; color: #e2e8f0; font-weight: 650; }
-    .check {
-      flex: 0 0 auto;
-      display: grid;
-      place-items: center;
-      width: 22px;
-      height: 22px;
-      margin-top: 1px;
-      border-radius: 50%;
-      background: rgba(45, 212, 191, 0.18);
-      color: #5eead4;
-      font-size: 0.85rem;
       font-weight: 900;
+      border: 1px solid transparent;
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn.primary { background: linear-gradient(135deg, #e0f2fe, #67e8f9); color: #05111e; box-shadow: 0 18px 44px rgba(34,211,238,.2); }
+    .btn.ghost { border-color: rgba(255,255,255,.18); color: #e2e8f0; background: rgba(255,255,255,.055); }
+
+    .hero-dashboard {
+      border: 1px solid var(--line);
+      border-radius: 34px;
+      background: rgba(3, 7, 18, .48);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      backdrop-filter: blur(16px);
     }
 
-    section { margin-top: 74px; }
-    .section-top { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 24px; }
-    .section-top p { margin: 0; color: var(--muted); max-width: 610px; font-size: 1.06rem; }
-
-    .pill-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
-    .pill {
-      display: inline-flex;
+    .dash-top {
+      display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: #eef6ff;
-      border: 1px solid #d6e7fb;
-      color: #164e8c;
+      justify-content: space-between;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
       font-weight: 800;
-      font-size: 0.9rem;
+      font-size: .88rem;
+    }
+    .dots { display: flex; gap: 7px; }
+    .dots i { width: 10px; height: 10px; border-radius: 50%; background: #ef4444; display:block; }
+    .dots i:nth-child(2) { background: #f59e0b; }
+    .dots i:nth-child(3) { background: #22c55e; }
+
+    .dash-body { padding: 22px; }
+    .profile-card {
+      padding: 24px;
+      border-radius: 26px;
+      background: linear-gradient(135deg, rgba(96,165,250,.22), rgba(34,211,238,.08));
+      border: 1px solid rgba(125, 211, 252, .18);
+    }
+    .avatar-row { display: flex; align-items: center; gap: 16px; }
+    .avatar {
+      width: 74px; height: 74px; border-radius: 24px;
+      background: linear-gradient(135deg, #60a5fa, #22d3ee 52%, #a78bfa);
+      color: #06101d;
+      display: grid; place-items: center;
+      font-size: 1.55rem; font-weight: 950;
+      box-shadow: 0 14px 34px rgba(34,211,238,.22);
+    }
+    .profile-card h2 { font-size: 1.45rem; letter-spacing: -.045em; }
+    .profile-card p { margin: 6px 0 0; color: #cbd5e1; }
+
+    .signal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+    .signal {
+      min-height: 108px;
+      padding: 17px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: rgba(255,255,255,.045);
+    }
+    .signal strong { display:block; font-size: 1.65rem; letter-spacing: -.05em; line-height: 1; }
+    .signal span { display:block; margin-top: 8px; color: var(--muted); font-weight: 750; font-size: .9rem; }
+
+    .stack-list { margin: 18px 0 0; display:grid; gap: 10px; }
+    .stack-item { display:flex; align-items:center; gap: 11px; color:#dbeafe; font-weight:780; }
+    .pulse { width: 9px; height:9px; border-radius:50%; background: var(--green); box-shadow: 0 0 0 6px rgba(52,211,153,.12); }
+
+    section { padding: 48px 0; }
+    .section-head { display:grid; grid-template-columns: .72fr 1fr; gap: 28px; align-items:end; margin-bottom: 24px; }
+    .section-head h2 { font-size: clamp(2.35rem, 4.8vw, 5rem); font-weight: 950; }
+    .section-head p { margin: 0; color: var(--muted); font-size: 1.08rem; max-width: 680px; }
+
+    .marquee {
+      margin: 26px 0 0;
+      display:flex; flex-wrap:wrap; gap: 10px;
+    }
+    .chip {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.055);
+      color: #dbeafe;
+      border-radius: 999px;
+      padding: 9px 12px;
+      font-size: .88rem;
+      font-weight: 850;
     }
 
-    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
-
-    .card {
+    .bento { display:grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
+    .tile {
       position: relative;
       overflow: hidden;
+      min-height: 238px;
       padding: 24px;
+      border: 1px solid var(--line);
       border-radius: var(--radius);
+      background: var(--panel);
+      box-shadow: 0 16px 50px rgba(0,0,0,.16);
+    }
+    .tile::before {
+      content:"";
+      position:absolute; inset:0;
+      background: radial-gradient(circle at 20% 0%, rgba(96,165,250,.18), transparent 34%), radial-gradient(circle at 95% 18%, rgba(34,211,238,.12), transparent 32%);
+      pointer-events:none;
+    }
+    .tile > * { position: relative; z-index: 1; }
+    .tile h3 { font-size: 1.5rem; letter-spacing: -.05em; margin-bottom: 12px; }
+    .tile p { margin: 0; color: #b7c2d3; }
+    .tile ul { margin: 17px 0 0; padding:0; list-style:none; display:grid; gap: 9px; color:#d9e5f5; }
+    .tile li { display:flex; gap: 10px; align-items:flex-start; }
+    .tile li::before { content:"→"; color: var(--cyan); font-weight: 900; }
+    .span-7 { grid-column: span 7; }
+    .span-5 { grid-column: span 5; }
+    .span-4 { grid-column: span 4; }
+    .span-6 { grid-column: span 6; }
+
+    .project {
+      min-height: 340px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+    .project .num { color: rgba(255,255,255,.28); font-weight:950; font-size: .86rem; letter-spacing:.16em; }
+    .project h3 { margin-top: 34px; font-size: clamp(1.8rem, 3vw, 3.15rem); }
+    .project p { max-width: 620px; margin-top: 14px; }
+    .tags { display:flex; flex-wrap:wrap; gap: 8px; margin-top: 22px; }
+    .tag { color:#cbd5e1; background: rgba(15,23,42,.66); border:1px solid var(--line); padding: 7px 10px; border-radius:999px; font-size:.78rem; font-weight:850; }
+
+    .project.featured {
+      grid-column: span 8;
+      background: linear-gradient(135deg, rgba(59,130,246,.28), rgba(15,23,42,.78));
+    }
+    .project.side { grid-column: span 4; }
+    .project.half { grid-column: span 6; }
+
+    .proof-strip {
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 16px;
+    }
+    .proof {
+      padding: 20px;
       border: 1px solid var(--line);
-      background: var(--paper);
-      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.05);
+      border-radius: 22px;
+      background: rgba(255,255,255,.045);
     }
-    .card::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, var(--blue), var(--teal));
-      opacity: 0.95;
+    .proof strong { display:block; font-size: 1.65rem; letter-spacing:-.045em; }
+    .proof span { display:block; color: var(--muted); margin-top: 8px; font-weight: 750; }
+
+    .roles-grid { display:grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .role-card {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 16px;
+      padding: 18px 20px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: rgba(255,255,255,.045);
     }
-    .card p { color: var(--muted); margin: 12px 0 0; }
-    .card ul { margin: 14px 0 0; padding-left: 18px; color: var(--muted); }
-    .card li { margin: 6px 0; }
+    .role-card b { font-size: 1.05rem; }
+    .role-card em { color: var(--green); font-style:normal; font-weight: 900; white-space:nowrap; }
 
-    .icon {
-      display: grid;
-      place-items: center;
-      width: 42px;
-      height: 42px;
-      border-radius: 14px;
-      margin-bottom: 16px;
-      background: #eff6ff;
-      color: var(--blue-2);
-      font-size: 1.2rem;
-    }
-
-    .project-card { display: flex; flex-direction: column; min-height: 100%; }
-    .project-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
-    .tag { padding: 6px 9px; border-radius: 999px; background: #f1f5f9; color: #334155; font-size: 0.78rem; font-weight: 800; }
-    .project-card strong { color: var(--ink); }
-
-    .quote-panel {
-      padding: clamp(26px, 5vw, 52px);
-      border-radius: var(--radius-xl);
-      background: linear-gradient(135deg, #102243, #123b57 54%, #0f766e);
-      color: white;
+    .resume-panel {
+      display:grid;
+      grid-template-columns: .9fr 1.1fr;
+      border: 1px solid var(--line);
+      border-radius: 34px;
+      overflow:hidden;
+      background: rgba(255,255,255,.045);
       box-shadow: var(--shadow);
     }
-    .quote-panel blockquote { margin: 0; font-size: clamp(1.45rem, 3vw, 2.45rem); line-height: 1.18; letter-spacing: -0.045em; font-weight: 850; }
-    .quote-panel p { color: #dbeafe; max-width: 850px; margin: 20px 0 0; font-size: 1.08rem; }
+    .resume-left { padding: 32px; background: linear-gradient(180deg, rgba(96,165,250,.13), rgba(255,255,255,.02)); border-right:1px solid var(--line); }
+    .resume-right { padding: 32px; }
+    .resume-panel h3 { font-size: 1rem; letter-spacing:.14em; text-transform:uppercase; color:#93c5fd; margin-bottom:12px; }
+    .resume-title { font-size: clamp(2rem, 3vw, 3.25rem); line-height:1.02; letter-spacing:-.06em; font-weight:950; }
+    .resume-sub { margin-top: 12px; color:#cbd5e1; font-size:1.08rem; }
+    .resume-panel p { color: #c1ccdc; }
+    .story {
+      margin-top: 18px;
+      padding: 22px;
+      border-radius: 22px;
+      border: 1px solid rgba(34,211,238,.22);
+      background: rgba(34,211,238,.07);
+      color: #dffbff;
+      font-size: 1.08rem;
+      font-weight: 760;
+    }
 
-    .resume-box {
-      display: grid;
-      grid-template-columns: 0.75fr 1.25fr;
-      gap: 20px;
-      border-radius: var(--radius-xl);
-      border: 1px solid var(--line);
-      background: #fff;
+    .timeline { display:grid; gap: 14px; }
+    .timeline-item { padding-left: 18px; border-left: 2px solid rgba(34,211,238,.45); }
+    .timeline-item b { display:block; }
+    .timeline-item span { display:block; margin-top: 4px; color: var(--muted); }
+
+    .final-cta {
+      margin: 48px 0 78px;
+      padding: clamp(30px, 6vw, 62px);
+      border-radius: 36px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: linear-gradient(135deg, rgba(96,165,250,.24), rgba(167,139,250,.15) 45%, rgba(34,211,238,.12));
       box-shadow: var(--shadow);
-      overflow: hidden;
+      text-align:center;
     }
-    .resume-sidebar { padding: 30px; background: #f1f6fb; border-right: 1px solid var(--line); }
-    .resume-main { padding: 30px; }
-    .resume-title { font-size: 1.55rem; font-weight: 900; letter-spacing: -0.04em; line-height: 1.15; }
-    .resume-subtitle { color: var(--muted); margin-top: 8px; font-weight: 700; }
-    .resume-section + .resume-section { margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--line); }
-    .resume-section h3 { font-size: 1rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--soft); margin-bottom: 12px; }
+    .final-cta h2 { font-size: clamp(2.5rem, 5vw, 5.5rem); }
+    .final-cta p { max-width: 780px; margin: 20px auto 0; color: #d0d9e8; font-size: 1.15rem; }
 
-    .roles { display: grid; gap: 10px; }
-    .role { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 13px 15px; border: 1px solid var(--line); border-radius: 14px; background: #fff; }
-    .role span:first-child { font-weight: 850; }
-    .role span:last-child { color: var(--teal); font-size: 0.9rem; font-weight: 850; white-space: nowrap; }
+    footer { border-top: 1px solid var(--line); padding: 28px 0 40px; color: var(--soft); display:flex; justify-content:space-between; gap: 16px; flex-wrap:wrap; }
 
-    .timeline { display: grid; gap: 14px; }
-    .timeline-item { padding-left: 18px; border-left: 3px solid #bfdbfe; }
-    .timeline-item strong { display: block; font-size: 1.05rem; }
-    .timeline-item p { margin: 5px 0 0; color: var(--muted); }
-
-    .footer {
-      margin-top: 80px;
-      padding-top: 24px;
-      border-top: 1px solid var(--line);
-      color: var(--soft);
-      display: flex;
-      justify-content: space-between;
-      gap: 20px;
-      flex-wrap: wrap;
-      font-size: 0.95rem;
+    @media (max-width: 980px) {
+      .hero, .section-head, .resume-panel { grid-template-columns: 1fr; }
+      .span-7, .span-5, .span-4, .span-6, .project.featured, .project.side, .project.half { grid-column: 1 / -1; }
+      .proof-strip { grid-template-columns: 1fr 1fr; }
+      .resume-left { border-right:0; border-bottom:1px solid var(--line); }
     }
-
-    @media (max-width: 900px) {
-      .hero, .resume-box { grid-template-columns: 1fr; }
-      .grid-3, .grid-2 { grid-template-columns: 1fr; }
-      .section-top { display: block; }
-      .section-top p { margin-top: 10px; }
-      .resume-sidebar { border-right: 0; border-bottom: 1px solid var(--line); }
-      .nav { align-items: flex-start; flex-direction: column; }
-      .nav-links { justify-content: flex-start; }
+    @media (max-width: 720px) {
+      .wrap { width: min(100% - 28px, var(--max)); }
+      .nav { align-items:flex-start; flex-direction:column; padding: 12px 0; }
+      .links { justify-content:flex-start; }
+      .links a { padding: 8px 9px; font-size:.82rem; }
+      .hero { padding-top: 34px; }
+      .hero-copy, .dash-body, .resume-left, .resume-right { padding: 20px; }
+      .signal-grid, .proof-strip, .roles-grid { grid-template-columns: 1fr; }
+      .tile, .project { min-height: auto; }
+      h1 { font-size: clamp(3rem, 16vw, 4.65rem); }
     }
-
     @media print {
-      body { background: white; }
-      .nav, .hero-actions, .footer { display: none; }
-      .page-shell { max-width: none; padding: 0; }
-      section { margin-top: 34px; break-inside: avoid; }
-      .hero, .card, .resume-box, .quote-panel { box-shadow: none; }
-      .hero { padding: 24px; }
+      body { background: #fff; color:#111827; }
+      body::before, .topbar, .actions { display:none; }
+      .wrap { width:100%; max-width:none; padding:0 22px; }
+      .hero, .section-head, .resume-panel { grid-template-columns:1fr; }
+      .hero-copy, .hero-dashboard, .tile, .resume-panel, .final-cta { box-shadow:none; background:#fff; color:#111827; border-color:#d1d5db; }
+      .gradient-text { color:#111827; background:none; }
+      .lead, .tile p, .resume-panel p, .timeline-item span, .section-head p { color:#374151; }
     }
   </style>
 </head>
 <body>
-  <div class="page-shell">
-    <nav class="nav" aria-label="Primary navigation">
-      <div class="brand">
-        <div class="brand-mark">SK</div>
-        <div>Scott Krech<br><span style="color:var(--soft);font-weight:700;font-size:.9rem;letter-spacing:0">Growth Technology Portfolio</span></div>
-      </div>
-      <div class="nav-links">
-        <a href="#skills">Skills</a>
-        <a href="#projects">Projects</a>
-        <a href="#roles">Target Roles</a>
+  <div class="topbar">
+    <nav class="wrap nav" aria-label="Primary navigation">
+      <a class="brand" href="#top" aria-label="Scott Krech portfolio home">
+        <span class="mark">SK</span>
+        <span>Scott Krech<small>Growth Systems Operator</small></span>
+      </a>
+      <div class="links">
+        <a href="#positioning">Positioning</a>
+        <a href="#proof">Project Proof</a>
+        <a href="#roles">Roles</a>
         <a href="#resume">Resume Copy</a>
       </div>
     </nav>
+  </div>
 
+  <main id="top" class="wrap">
     <header class="hero">
-      <div>
-        <p class="eyebrow">Websites · Funnels · AI Workflows · Small-Business Systems</p>
-        <h1>Growth-focused technical operator who turns business problems into working digital systems.</h1>
-        <p class="lead">Independent consulting background with hands-on experience building conversion-focused websites, customer intake workflows, review funnels, AI-assisted reports, payment/product funnels, and operational automation for small businesses.</p>
-        <div class="pill-row" aria-label="Core capabilities">
-          <span class="pill">Marketing Technology</span>
-          <span class="pill">AI Implementation</span>
-          <span class="pill">CRM & Workflow Automation</span>
-          <span class="pill">Conversion UX</span>
-          <span class="pill">Client Implementation</span>
+      <section class="hero-copy" aria-label="Hero">
+        <p class="kicker">Portfolio-first career positioning</p>
+        <h1><span class="gradient-text">Growth systems</span> builder for small-business teams.</h1>
+        <p class="lead">I help businesses turn messy customer processes into clean digital workflows — websites, funnels, forms, AI-assisted reports, review systems, intake tools, and follow-up automation.</p>
+        <div class="actions">
+          <a class="btn primary" href="#proof">See project proof</a>
+          <a class="btn ghost" href="#resume">Use resume language</a>
         </div>
-        <div class="hero-actions">
-          <a class="button primary" href="#projects">View Project Proof</a>
-          <a class="button secondary" href="#resume">Use Resume Positioning</a>
+      </section>
+
+      <aside class="hero-dashboard" aria-label="Career dashboard summary">
+        <div class="dash-top"><span>candidate-positioning.deck</span><span class="dots"><i></i><i></i><i></i></span></div>
+        <div class="dash-body">
+          <div class="profile-card">
+            <div class="avatar-row">
+              <div class="avatar">SK</div>
+              <div>
+                <h2>Marketing Technology / Growth Operations</h2>
+                <p>Business sense + technical execution + AI workflows</p>
+              </div>
+            </div>
+            <div class="stack-list">
+              <div class="stack-item"><span class="pulse"></span><span>Independent consulting becomes experience, not a gap.</span></div>
+              <div class="stack-item"><span class="pulse"></span><span>Portfolio demonstrates modern, employable implementation skills.</span></div>
+            </div>
+          </div>
+          <div class="signal-grid">
+            <div class="signal"><strong>20+</strong><span>years independent consulting / business building</span></div>
+            <div class="signal"><strong>6</strong><span>portfolio projects with real business use cases</span></div>
+            <div class="signal"><strong>AI</strong><span>reports, coaching, search visibility, workflows</span></div>
+            <div class="signal"><strong>Ops</strong><span>forms, CRM-style flows, payments, follow-up</span></div>
+          </div>
         </div>
-      </div>
-      <aside class="hero-card" aria-label="Positioning summary">
-        <div class="headline">Best-fit positioning: Marketing Technology / Growth Operations / AI Workflow Builder</div>
-        <p>Not “entry-level developer.” Not “semi-retired.” The stronger story is experienced independent operator with current, practical technical skills.</p>
-        <ul class="mini-list">
-          <li><span class="check">✓</span><span>Understands business, marketing, and customer psychology.</span></li>
-          <li><span class="check">✓</span><span>Can build the page, form, funnel, workflow, and follow-up system.</span></li>
-          <li><span class="check">✓</span><span>Uses AI and automation as practical business tools, not buzzwords.</span></li>
-        </ul>
       </aside>
     </header>
 
-    <section id="skills">
-      <div class="section-top">
+    <section id="positioning">
+      <div class="section-head">
+        <h2>Not a junior dev. A practical operator.</h2>
         <div>
-          <p class="eyebrow">Marketable Skills</p>
-          <h2>What employers can hire Scott to do</h2>
+          <p>The strongest hiring story is the hybrid lane: someone who understands marketing, customer psychology, offers, small-business operations, and can still build the page/tool/workflow.</p>
+          <div class="marquee">
+            <span class="chip">Marketing Technology</span>
+            <span class="chip">Growth Operations</span>
+            <span class="chip">AI Implementation</span>
+            <span class="chip">CRM Automation</span>
+            <span class="chip">Conversion UX</span>
+            <span class="chip">Client Implementation</span>
+          </div>
         </div>
-        <p>These skills are strongest when packaged together: business judgment + marketing strategy + hands-on technical implementation.</p>
       </div>
-      <div class="grid-3">
-        <article class="card">
-          <div class="icon">↗</div>
-          <h3>Conversion-focused websites & funnels</h3>
-          <p>Builds pages and flows intended to create action: estimate requests, reviews, signups, intake forms, and paid offers.</p>
+
+      <div class="bento">
+        <article class="tile span-7">
+          <h3>Conversion websites & funnels</h3>
+          <p>Builds digital assets designed to create business outcomes — estimates, reviews, signups, payments, client intake, and follow-up.</p>
           <ul>
-            <li>Landing pages and authority hubs</li>
-            <li>CTA strategy and trust proof</li>
-            <li>Local-service SEO pages</li>
+            <li>Landing pages, authority hubs, service pages, and calculators</li>
+            <li>CTA hierarchy, trust proof, local SEO, offer positioning</li>
+            <li>Copy and UX choices tied to customer action</li>
           </ul>
         </article>
-        <article class="card">
-          <div class="icon">⚙</div>
-          <h3>Marketing operations & automation</h3>
-          <p>Connects messy business processes into usable digital workflows involving forms, emails, CRM-style routing, PDFs, and follow-up.</p>
+        <article class="tile span-5">
+          <h3>AI-assisted business workflows</h3>
+          <p>Uses AI as implementation leverage, not just novelty.</p>
           <ul>
-            <li>Lead capture and notifications</li>
-            <li>Review request workflows</li>
-            <li>Customer intake and authorization systems</li>
+            <li>AI search / GEO audits and client reports</li>
+            <li>Video transcript analysis and executive summaries</li>
+            <li>AI coaching/product workflow concepts</li>
           </ul>
         </article>
-        <article class="card">
-          <div class="icon">AI</div>
-          <h3>AI implementation for business</h3>
-          <p>Uses AI to create practical value: coaching products, search visibility audits, report generation, content analysis, and workflow acceleration.</p>
-          <ul>
-            <li>AI-assisted reports</li>
-            <li>AI coaching/product concepts</li>
-            <li>GEO / AI search optimization</li>
-          </ul>
+        <article class="tile span-4">
+          <h3>Operations automation</h3>
+          <p>Connects forms, notifications, PDFs, review requests, and admin flows so a business can run cleaner.</p>
         </article>
-        <article class="card">
-          <div class="icon">◧</div>
-          <h3>UI/UX product judgment</h3>
-          <p>Improves forms and tools by reducing friction: clearer instructions, better mobile tap targets, responsive layouts, and cleaner path selection.</p>
-          <ul>
-            <li>Mobile-first customer flows</li>
-            <li>Desktop/mobile responsive decisions</li>
-            <li>Cleaner customer guidance</li>
-          </ul>
+        <article class="tile span-4">
+          <h3>Product & UX judgment</h3>
+          <p>Spots friction: unclear instructions, weak mobile tap targets, confusing path choices, and desktop/mobile layout issues.</p>
         </article>
-        <article class="card">
-          <div class="icon">▣</div>
-          <h3>Full-stack implementation</h3>
-          <p>Hands-on enough to ship real tools using modern web stacks and practical backend pieces.</p>
-          <ul>
-            <li>React, TypeScript, Vite, Tailwind</li>
-            <li>Node/Express, PHP, APIs</li>
-            <li>MySQL/Postgres-style data workflows</li>
-          </ul>
-        </article>
-        <article class="card">
-          <div class="icon">☑</div>
-          <h3>Client-facing problem solving</h3>
-          <p>Can talk to business owners, identify the operational bottleneck, and translate it into a usable page, tool, or process.</p>
-          <ul>
-            <li>Small-business consulting</li>
-            <li>Offer/message development</li>
-            <li>Implementation and iteration</li>
-          </ul>
+        <article class="tile span-4">
+          <h3>Technical implementation</h3>
+          <p>Hands-on with React, TypeScript, Node/Express, PHP, APIs, Vite, Tailwind, MySQL/Postgres-style workflows, Railway, and GitHub.</p>
         </article>
       </div>
     </section>
 
-    <section class="quote-panel" aria-label="Positioning statement">
-      <blockquote>“I build practical growth systems for small businesses — websites, forms, funnels, automations, AI-assisted reports, and follow-up workflows.”</blockquote>
-      <p>This is the story to lead with. It reframes the past 20 years as independent consulting and business-building experience, not a gap.</p>
-    </section>
-
-    <section id="projects">
-      <div class="section-top">
-        <div>
-          <p class="eyebrow">Project Proof</p>
-          <h2>Portfolio examples that support the positioning</h2>
-        </div>
-        <p>Each project should be presented as a business problem solved, not just a code repo.</p>
+    <section id="proof">
+      <div class="section-head">
+        <h2>Project proof that sells the story.</h2>
+        <p>These should be framed as business systems, not random repos. Each project proves a piece of the employer-facing value proposition.</p>
       </div>
-      <div class="grid-2">
-        <article class="card project-card">
-          <h3>RDK WorkAuth</h3>
-          <p><strong>What it proves:</strong> ability to build a real customer intake and repair authorization workflow for a service business.</p>
-          <ul>
-            <li>Responsive customer-facing intake form</li>
-            <li>Repair authorization path and admin workflow thinking</li>
-            <li>UX refinements for mobile taps, desktop layout, and customer guidance</li>
-            <li>Deployment, testing, iteration, and live verification</li>
-          </ul>
-          <div class="project-meta"><span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">Forms</span><span class="tag">Customer UX</span><span class="tag">Railway</span></div>
+
+      <div class="bento">
+        <article class="tile project featured">
+          <div>
+            <span class="num">01 / SERVICE BUSINESS WORKFLOW</span>
+            <h3>RDK WorkAuth</h3>
+            <p>Customer intake and repair authorization workflow for an auto body business — responsive form UX, path selection, authorization details, admin workflow thinking, deployment, and live iteration.</p>
+          </div>
+          <div class="tags"><span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">Customer Intake</span><span class="tag">Admin UX</span><span class="tag">Railway</span></div>
         </article>
-        <article class="card project-card">
-          <h3>LeaveAReview.co</h3>
-          <p><strong>What it proves:</strong> reputation-management product thinking for small businesses.</p>
-          <ul>
-            <li>Customer review funnel via text, email, QR, or NFC</li>
-            <li>Admin dashboard to generate branded review pages and QR codes</li>
-            <li>Private feedback workflow with validation, rate limiting, and anti-spam honeypot</li>
-            <li>Public landing page + client page generation system</li>
-          </ul>
-          <div class="project-meta"><span class="tag">HTML/CSS/JS</span><span class="tag">PHP</span><span class="tag">QR Codes</span><span class="tag">Reputation Mgmt</span></div>
+
+        <article class="tile project side">
+          <div>
+            <span class="num">02 / REPUTATION PRODUCT</span>
+            <h3>LeaveAReview.co</h3>
+            <p>Review hub and small-business reputation system with branded pages, QR/NFC flow, admin generator, private feedback, rate limiting, and anti-spam handling.</p>
+          </div>
+          <div class="tags"><span class="tag">PHP</span><span class="tag">QR</span><span class="tag">Review Funnel</span></div>
         </article>
-        <article class="card project-card">
-          <h3>Elevait Life</h3>
-          <p><strong>What it proves:</strong> AI-powered product/platform thinking with subscriptions, coaching, modules, and access control.</p>
-          <ul>
-            <li>6-month transformation platform concept</li>
-            <li>AI coaching and AI reflection partner workflows</li>
-            <li>Habit tracking, journaling, weekly reviews, and tiered access</li>
-            <li>Payment/subscription and upgrade funnel strategy</li>
-          </ul>
-          <div class="project-meta"><span class="tag">React</span><span class="tag">Express</span><span class="tag">TypeScript</span><span class="tag">AI APIs</span><span class="tag">Payments</span></div>
+
+        <article class="tile project half">
+          <div>
+            <span class="num">03 / AI PRODUCT PLATFORM</span>
+            <h3>Elevait Life</h3>
+            <p>AI coaching and transformation platform concept with modules, habit tracking, reflections, tiered access, checkout strategy, and subscription-style offer design.</p>
+          </div>
+          <div class="tags"><span class="tag">AI APIs</span><span class="tag">React</span><span class="tag">Payments</span><span class="tag">Product Strategy</span></div>
         </article>
-        <article class="card project-card">
-          <h3>GEO / AI Search Visibility</h3>
-          <p><strong>What it proves:</strong> current market awareness around AI search, generative engine optimization, and client-ready reporting.</p>
-          <ul>
-            <li>AI search visibility audit direction</li>
-            <li>Citability, schema, technical SEO, and E-E-A-T thinking</li>
-            <li>Report generation and client-facing recommendations</li>
-            <li>Positioning around ChatGPT, Claude, Perplexity, Gemini, and AI Overviews</li>
-          </ul>
-          <div class="project-meta"><span class="tag">GEO</span><span class="tag">SEO</span><span class="tag">Python</span><span class="tag">Reports</span><span class="tag">AI Search</span></div>
+
+        <article class="tile project half">
+          <div>
+            <span class="num">04 / AI SEARCH MARKET</span>
+            <h3>GEO / AI Search Visibility</h3>
+            <p>Generative Engine Optimization direction: AI search audits, citability, schema, E-E-A-T, platform recommendations, and client-ready reporting.</p>
+          </div>
+          <div class="tags"><span class="tag">GEO</span><span class="tag">SEO</span><span class="tag">Reports</span><span class="tag">AI Search</span></div>
         </article>
-        <article class="card project-card">
-          <h3>Roof-M-All / Home Service Website System</h3>
-          <p><strong>What it proves:</strong> local service marketing, conversion strategy, trust proof, calculators, lead capture, and SEO/content planning.</p>
-          <ul>
-            <li>Conversion-first homepage and service pages</li>
-            <li>Sticky phone CTA and free estimate form strategy</li>
-            <li>Roofing/siding/gutter calculator and local area pages</li>
-            <li>Lead capture backend and CRM-ready field planning</li>
-          </ul>
-          <div class="project-meta"><span class="tag">Local SEO</span><span class="tag">Lead Gen</span><span class="tag">Postgres</span><span class="tag">Home Services</span></div>
+
+        <article class="tile project half">
+          <div>
+            <span class="num">05 / LOCAL SERVICE GROWTH</span>
+            <h3>Roof-M-All</h3>
+            <p>Conversion-first home-service website with trust proof, estimate CTAs, cost calculator, local SEO pages, lead capture, and CRM-ready planning.</p>
+          </div>
+          <div class="tags"><span class="tag">Lead Gen</span><span class="tag">Local SEO</span><span class="tag">Calculator</span><span class="tag">CRM Fields</span></div>
         </article>
-        <article class="card project-card">
-          <h3>Charlotte Property Detailing App</h3>
-          <p><strong>What it proves:</strong> ability to quickly build simple operational tools for a real service provider.</p>
-          <ul>
-            <li>Customer service record form</li>
-            <li>Digital signature capture</li>
-            <li>Branded email record sent to customer and business</li>
-            <li>Practical mobile workflow for field use</li>
-          </ul>
-          <div class="project-meta"><span class="tag">Node</span><span class="tag">Forms</span><span class="tag">Email</span><span class="tag">Digital Signature</span></div>
+
+        <article class="tile project half">
+          <div>
+            <span class="num">06 / FIELD OPERATIONS</span>
+            <h3>Charlotte Property Detailing</h3>
+            <p>Mobile service record app for field use: customer details, service performed, amount charged, digital signature, and branded email record.</p>
+          </div>
+          <div class="tags"><span class="tag">Node</span><span class="tag">Forms</span><span class="tag">Digital Signature</span><span class="tag">Email</span></div>
         </article>
+      </div>
+
+      <div class="proof-strip" aria-label="Portfolio proof points">
+        <div class="proof"><strong>Business-first</strong><span>Projects start with customer workflow and revenue objective.</span></div>
+        <div class="proof"><strong>Hands-on</strong><span>Builds pages, forms, dashboards, and deployment-ready systems.</span></div>
+        <div class="proof"><strong>Modern</strong><span>AI, automation, responsive UX, and cloud deployment.</span></div>
+        <div class="proof"><strong>Useful</strong><span>Tools solve real SMB problems, not portfolio-only exercises.</span></div>
       </div>
     </section>
 
     <section id="roles">
-      <div class="section-top">
-        <div>
-          <p class="eyebrow">Hiring Fit</p>
-          <h2>Roles that match the portfolio</h2>
-        </div>
-        <p>The best roles are hybrid business/technical roles — where practical implementation matters more than a traditional corporate ladder.</p>
+      <div class="section-head">
+        <h2>Where this profile fits.</h2>
+        <p>The best targets are hybrid roles where a company needs a business-minded builder: agencies, local-business SaaS, AI automation shops, CRM/funnel teams, and small companies with messy operations.</p>
       </div>
-      <div class="grid-2">
-        <div class="card">
-          <h3>Best-fit job titles</h3>
-          <div class="roles" style="margin-top:16px">
-            <div class="role"><span>Marketing Technology Specialist</span><span>Strong fit</span></div>
-            <div class="role"><span>Growth Operations Specialist</span><span>Strong fit</span></div>
-            <div class="role"><span>AI Implementation Specialist</span><span>Strong fit</span></div>
-            <div class="role"><span>CRM / Automation Specialist</span><span>Good fit</span></div>
-            <div class="role"><span>Client Implementation Specialist</span><span>Good fit</span></div>
-            <div class="role"><span>Web / Funnel Builder</span><span>Good fit</span></div>
-            <div class="role"><span>Digital Operations Specialist</span><span>Good fit</span></div>
-          </div>
-        </div>
-        <div class="card">
-          <h3>Employers most likely to value this</h3>
-          <ul>
-            <li>Marketing agencies that need builders, not just strategists</li>
-            <li>CRM/funnel agencies serving local businesses</li>
-            <li>AI automation agencies and consultants</li>
-            <li>Home-service SaaS companies and local-business SaaS teams</li>
-            <li>Small companies needing a scrappy operator who can build and improve systems</li>
-            <li>Startups needing product, marketing, and implementation support in one person</li>
-          </ul>
-        </div>
+
+      <div class="roles-grid">
+        <div class="role-card"><b>Marketing Technology Specialist</b><em>Strong fit</em></div>
+        <div class="role-card"><b>Growth Operations Specialist</b><em>Strong fit</em></div>
+        <div class="role-card"><b>AI Implementation Specialist</b><em>Strong fit</em></div>
+        <div class="role-card"><b>CRM / Automation Specialist</b><em>Good fit</em></div>
+        <div class="role-card"><b>Client Implementation Specialist</b><em>Good fit</em></div>
+        <div class="role-card"><b>Web / Funnel Builder</b><em>Good fit</em></div>
       </div>
     </section>
 
     <section id="resume">
-      <div class="section-top">
-        <div>
-          <p class="eyebrow">Resume Positioning</p>
-          <h2>Use portfolio-first language</h2>
-        </div>
-        <p>Do not lead with “semi-retired.” Lead with “20+ years independent consulting and hands-on implementation.”</p>
+      <div class="section-head">
+        <h2>Resume-ready positioning.</h2>
+        <p>Use portfolio-first language. Do not lead with “semi-retired.” Lead with independent consulting, practical implementation, business systems, and modern tools.</p>
       </div>
-      <div class="resume-box">
-        <aside class="resume-sidebar">
+
+      <div class="resume-panel">
+        <div class="resume-left">
+          <h3>Headline</h3>
           <div class="resume-title">Growth Technology & Marketing Operations Specialist</div>
-          <div class="resume-subtitle">Websites · Funnels · AI Workflows · CRM Automation · Small-Business Systems</div>
-          <div class="resume-section">
-            <h3>Core Tools</h3>
-            <div class="pill-row">
-              <span class="pill">React</span><span class="pill">TypeScript</span><span class="pill">Node/Express</span><span class="pill">PHP</span><span class="pill">Tailwind</span><span class="pill">Vite</span><span class="pill">APIs</span><span class="pill">AI Tools</span><span class="pill">Railway</span>
-            </div>
+          <p class="resume-sub">Websites · Funnels · AI Workflows · CRM Automation · Small-Business Systems</p>
+          <div class="story">“I build practical growth systems for small businesses — websites, forms, funnels, automations, AI-assisted reports, and follow-up workflows.”</div>
+        </div>
+        <div class="resume-right">
+          <h3>Professional summary</h3>
+          <p>Growth-focused technical operator with 20+ years of independent consulting experience helping small businesses improve customer acquisition, follow-up, and digital workflows. Builds conversion-focused websites, intake forms, automation systems, AI-assisted reports, and practical client-facing tools. Combines marketing strategy, copywriting, UX judgment, and hands-on implementation across modern web tools, APIs, CRMs, payment flows, and AI-assisted workflows.</p>
+          <div class="timeline">
+            <div class="timeline-item"><b>Customer workflow systems</b><span>Digital intake, repair authorization, review routing, customer records, and admin-facing process support.</span></div>
+            <div class="timeline-item"><b>Growth assets</b><span>Conversion websites, calculators, local SEO pages, lead capture, trust proof, and offer messaging.</span></div>
+            <div class="timeline-item"><b>AI implementation</b><span>AI reports, AI search visibility, transcript/report workflows, and AI product concepts.</span></div>
           </div>
-        </aside>
-        <main class="resume-main">
-          <div class="resume-section" style="margin-top:0;padding-top:0;border-top:0">
-            <h3>Professional Summary</h3>
-            <p>Growth-focused technical operator with 20+ years of independent consulting experience helping small businesses improve customer acquisition, follow-up, and digital workflows. Builds conversion-focused websites, intake forms, automation systems, AI-assisted reports, and practical client-facing tools. Combines marketing strategy, copywriting, UX judgment, and hands-on implementation across modern web tools, APIs, CRMs, payment flows, and AI-assisted workflows.</p>
-          </div>
-          <div class="resume-section">
-            <h3>Selected Project Experience</h3>
-            <div class="timeline">
-              <div class="timeline-item"><strong>Customer Intake & Authorization Platform</strong><p>Built and iterated a mobile/desktop intake workflow for a service business, improving path selection, customer guidance, tap targets, and live deployment quality.</p></div>
-              <div class="timeline-item"><strong>Reputation Management Review Funnel</strong><p>Created a review hub system with branded client pages, QR/NFC customer entry, public Google review routing, private feedback capture, rate limiting, and admin generation tools.</p></div>
-              <div class="timeline-item"><strong>AI Coaching / Digital Product Platform</strong><p>Designed a paid transformation platform with AI coaching, habit tracking, modules, tiered access, checkout strategy, and subscription-style offer structure.</p></div>
-              <div class="timeline-item"><strong>Local-Service Lead Generation Website</strong><p>Built conversion-first service pages, cost calculator, trust/proof sections, local area SEO pages, CRM-ready lead fields, and lead capture backend planning.</p></div>
-            </div>
-          </div>
-          <div class="resume-section">
-            <h3>Recommended Career Story</h3>
-            <p>“I’ve spent the last 20 years doing independent consulting and building practical marketing and operations systems for small businesses. My strongest value is combining business sense, customer psychology, copywriting, AI tools, and hands-on implementation to create usable growth systems.”</p>
-          </div>
-        </main>
+        </div>
       </div>
     </section>
 
-    <footer class="footer">
-      <div>Scott Krech · Portfolio positioning page</div>
-      <div>Built as a resume/portfolio foundation for growth technology and marketing operations roles.</div>
-    </footer>
-  </div>
+    <section class="final-cta" aria-label="Closing positioning statement">
+      <h2>Experienced operator. Modern toolset. Practical outcomes.</h2>
+      <p>This page positions Scott for roles where companies need someone who can understand the business problem, shape the customer journey, build the digital workflow, and iterate it until it works.</p>
+    </section>
+  </main>
+
+  <footer class="wrap">
+    <span>Scott Krech · Growth Systems Portfolio</span>
+    <span>Built for employer positioning, portfolio proof, and resume development.</span>
+  </footer>
 </body>
 </html>
