@@ -410,15 +410,38 @@
       .resume-left { border-right:0; border-bottom:1px solid var(--line); }
     }
     @media (max-width: 720px) {
-      .wrap { width: min(100% - 28px, var(--max)); }
-      .nav { align-items:flex-start; flex-direction:column; padding: 12px 0; }
-      .links { justify-content:flex-start; }
-      .links a { padding: 8px 9px; font-size:.82rem; }
-      .hero { padding-top: 34px; }
-      .hero-copy, .dash-body, .resume-left, .resume-right { padding: 20px; }
+      .wrap { width: min(100% - 24px, var(--max)); }
+      .topbar { position: static; }
+      .nav { align-items:flex-start; flex-direction:column; gap: 12px; padding: 14px 0 12px; min-height: auto; }
+      .brand { gap: 10px; }
+      .mark { width: 40px; height: 40px; border-radius: 14px; }
+      .brand small { font-size: .74rem; }
+      .links { justify-content:flex-start; gap: 5px; width: 100%; }
+      .links a { padding: 8px 10px; font-size:.84rem; background: rgba(255,255,255,.045); border: 1px solid rgba(255,255,255,.06); }
+      .hero { padding-top: 24px; gap: 16px; }
+      .hero-copy { padding: 28px 22px; border-radius: 26px; }
+      .hero-dashboard { border-radius: 26px; }
+      .dash-body, .resume-left, .resume-right { padding: 20px; }
+      .kicker { font-size: .66rem; letter-spacing: .13em; gap: 8px; margin-bottom: 18px; line-height: 1.35; }
+      .kicker::before { width: 28px; }
+      .lead { font-size: 1.02rem; line-height: 1.5; margin-top: 18px; }
+      .actions { margin-top: 24px; }
+      .btn { width: 100%; min-height: 46px; }
       .signal-grid, .proof-strip, .roles-grid { grid-template-columns: 1fr; }
-      .tile, .project { min-height: auto; }
-      h1 { font-size: clamp(3rem, 16vw, 4.65rem); }
+      .tile, .project { min-height: auto; border-radius: 22px; padding: 21px; }
+      section { padding: 34px 0; }
+      .section-head { gap: 14px; margin-bottom: 18px; }
+      .section-head h2 { font-size: clamp(2rem, 11vw, 3.2rem); line-height: 1.02; }
+      h1 { font-size: clamp(2.35rem, 10.6vw, 3.5rem); line-height: 1.03; letter-spacing: -.07em; max-width: 10ch; }
+    }
+
+    @media (max-width: 420px) {
+      .wrap { width: min(100% - 20px, var(--max)); }
+      .hero-copy { padding: 24px 18px; }
+      h1 { font-size: clamp(2.25rem, 10.2vw, 3rem); max-width: 10.5ch; line-height: 1.04; }
+      .links a { font-size: .8rem; padding: 7px 9px; }
+      .profile-card { padding: 18px; }
+      .avatar { width: 58px; height: 58px; border-radius: 18px; }
     }
     @media print {
       body { background: #fff; color:#111827; }
