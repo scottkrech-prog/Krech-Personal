@@ -119,6 +119,36 @@
     }
     .links a:hover { color: white; background: rgba(255,255,255,.08); }
 
+    .menu-toggle {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 46px;
+      height: 42px;
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 14px;
+      background: rgba(255,255,255,.055);
+      color: #e2e8f0;
+      cursor: pointer;
+    }
+    .menu-toggle span,
+    .menu-toggle span::before,
+    .menu-toggle span::after {
+      display: block;
+      width: 19px;
+      height: 2px;
+      border-radius: 99px;
+      background: currentColor;
+      transition: transform .18s ease, opacity .18s ease;
+      content: "";
+    }
+    .menu-toggle span { position: relative; }
+    .menu-toggle span::before { position: absolute; transform: translateY(-6px); }
+    .menu-toggle span::after { position: absolute; transform: translateY(6px); }
+    .nav.nav-open .menu-toggle span { background: transparent; }
+    .nav.nav-open .menu-toggle span::before { background: #e2e8f0; transform: rotate(45deg); }
+    .nav.nav-open .menu-toggle span::after { background: #e2e8f0; transform: rotate(-45deg); }
+
     .hero {
       position: relative;
       display: grid;
@@ -411,14 +441,34 @@
     }
     @media (max-width: 720px) {
       .wrap { width: min(100% - 24px, var(--max)); }
-      .topbar { position: static; }
-      .nav { align-items:flex-start; flex-direction:column; gap: 12px; padding: 14px 0 12px; min-height: auto; }
-      .brand { gap: 10px; }
-      .mark { width: 40px; height: 40px; border-radius: 14px; }
+      .topbar { position: sticky; }
+      .nav { align-items:center; flex-direction:row; gap: 12px; padding: 12px 0; min-height: 64px; position: relative; }
+      .brand { gap: 10px; min-width: 0; }
+      .brand > span:last-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .mark { width: 40px; height: 40px; border-radius: 14px; flex: 0 0 auto; }
       .brand small { font-size: .74rem; }
-      .links { justify-content:flex-start; gap: 5px; width: 100%; }
-      .links a { padding: 8px 10px; font-size:.84rem; background: rgba(255,255,255,.045); border: 1px solid rgba(255,255,255,.06); }
-      .hero { padding-top: 24px; gap: 16px; }
+      .menu-toggle { display: inline-flex; margin-left: auto; flex: 0 0 auto; }
+      .links {
+        display: none;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: calc(100% + 8px);
+        z-index: 40;
+        padding: 10px;
+        border: 1px solid rgba(255,255,255,.12);
+        border-radius: 18px;
+        background: rgba(7, 10, 18, .96);
+        box-shadow: 0 20px 52px rgba(0,0,0,.42);
+        backdrop-filter: blur(18px);
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+        width: 100%;
+      }
+      .nav.nav-open .links { display: flex; }
+      .links a { padding: 12px 14px; font-size:.94rem; background: rgba(255,255,255,.055); border: 1px solid rgba(255,255,255,.07); border-radius: 13px; }
+      .hero { padding-top: 22px; gap: 16px; }
       .hero-copy { padding: 28px 22px; border-radius: 26px; }
       .hero-dashboard { border-radius: 26px; }
       .dash-body, .resume-left, .resume-right { padding: 20px; }
@@ -439,7 +489,7 @@
       .wrap { width: min(100% - 20px, var(--max)); }
       .hero-copy { padding: 24px 18px; }
       h1 { font-size: clamp(2.05rem, 9.3vw, 2.75rem); max-width: 100%; line-height: 1.06; }
-      .links a { font-size: .8rem; padding: 7px 9px; }
+      .links a { font-size: .9rem; padding: 11px 13px; }
       .profile-card { padding: 18px; }
       .avatar { width: 58px; height: 58px; border-radius: 18px; }
     }
@@ -461,7 +511,10 @@
         <span class="mark">SK</span>
         <span>Scott Krech<small>Growth Systems Operator</small></span>
       </a>
-      <div class="links">
+      <button class="menu-toggle" type="button" aria-label="Open navigation menu" aria-controls="site-links" aria-expanded="false">
+        <span aria-hidden="true"></span>
+      </button>
+      <div class="links" id="site-links">
         <a href="#positioning">Positioning</a>
         <a href="#proof">Project Proof</a>
         <a href="#roles">Roles</a>
@@ -679,5 +732,29 @@
     <span>Scott Krech · Growth Systems Portfolio</span>
     <span>Built for employer positioning, portfolio proof, and resume development.</span>
   </footer>
+  <script>
+    const nav = document.querySelector('.nav');
+    const menuToggle = document.querySelector('.menu-toggle');
+    const menuLinks = document.querySelectorAll('#site-links a');
+
+    function setMenu(open) {
+      if (!nav || !menuToggle) return;
+      nav.classList.toggle('nav-open', open);
+      menuToggle.setAttribute('aria-expanded', String(open));
+      menuToggle.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
+    }
+
+    menuToggle?.addEventListener('click', () => {
+      setMenu(!nav.classList.contains('nav-open'));
+    });
+
+    menuLinks.forEach((link) => {
+      link.addEventListener('click', () => setMenu(false));
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') setMenu(false);
+    });
+  </script>
 </body>
 </html>
